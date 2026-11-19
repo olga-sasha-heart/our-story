@@ -426,8 +426,8 @@ async function openIsland({ selectedDay, saved = null }) {
           : error.message === 'password'
             ? 'Дата или пароль не совпали. Попробуй ещё раз.'
             : error.message === 'startup'
-              ? 'Браузер не смог открыть остров. Обнови страницу и попробуй ещё раз.'
-              : 'Не получилось загрузить остров. Проверь интернет и попробуй ещё раз.';
+              ? 'Браузер не смог открыть книгу. Обнови страницу и попробуй ещё раз.'
+              : 'Не получилось загрузить книгу. Проверь интернет и попробуй ещё раз.';
     retry.hidden = !saved || ['password', 'expired'].includes(error.message);
     if (!saved) {
       password.focus();
