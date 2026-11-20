@@ -15,6 +15,7 @@ window.__PRIVATE_SITE_ROOT__ = siteRoot.href;
 for (let value = 1; value <= 30; value++) day.add(new Option(String(value), String(value)));
 const encoder = new TextEncoder();
 let frame = null;
+let stopVisit;
 let busy = false;
 let mediaController = null;
 let mediaUrls = [];
@@ -409,6 +410,11 @@ async function openIsland({ selectedDay, saved = null }) {
     day.value = '';
     status.textContent = '';
     frame.focus();
+    try {
+      stopVisit = frame.contentWindow.__START_VISIT__?.();
+    } catch {
+      // Недоступность статистики не мешает чтению книги.
+    }
   } catch (error) {
     if (error.message === 'locked' || generation !== currentGeneration) return;
     payloadRequest = null;
@@ -442,6 +448,10 @@ async function openIsland({ selectedDay, saved = null }) {
 }
 
 function clearSession(showForm = true) {
+  try {
+    stopVisit?.();
+  } catch {}
+  stopVisit = undefined;
   clearTimeout(expiryTimer);
   sessionExpiresAt = 0;
   generation++;
